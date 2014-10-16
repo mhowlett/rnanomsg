@@ -36,6 +36,18 @@ nn_socket <- function(domain, protocol) {
   res[["result"]]
 }
 
+nn_close <- function(s) {
+  res <- .C("rnn_close",
+    as.integer(s), result = integer(1))
+  res[["result"]]
+}
+
+nn_shutdown <- function(s, how) {
+  res <- .C("rnn_shutdown",
+    as.integer(s), as.integer(how), result = integer(1))
+  res[["result"]]
+}
+
 nn_connect <- function(s, addr) {
   res <- .C("rnn_connect", as.integer(s), addr, result=integer(1))
   res[["result"]]

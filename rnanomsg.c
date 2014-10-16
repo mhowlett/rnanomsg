@@ -38,3 +38,13 @@ void rnn_bind(int *s, const char **addr, int *result)
 {
   *result = nn_bind(*s, *addr);
 }
+
+void rnn_close(int *s, int *result)
+{
+  *result = nn_close(*s);
+}
+
+void rnn_shutdown(int *s, int *how, int *result)
+{
+  *result = nn_shutdown(*s, *how);
+}
