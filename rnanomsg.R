@@ -19,6 +19,8 @@
 # THE SOFTWARE.
 
 
+dyn.load('rnanomsg.so')
+
 # sp address families
 AF_SP <- 1
 AF_SP_RAW <- 2
@@ -29,32 +31,23 @@ NN_PROTO_REQREP <- 3
 NN_REQ <- NN_PROTO_REQREP * 16 + 0
 NN_REP <- NN_PROTO_REQREP * 16 + 1
 
-
 nn_socket <- function(domain, protocol) {
-  res <- .C("rnn_socket", 
-    as.integer(domain), as.integer(protocol), result=integer(1))
-  res[["result"]]
+  .Call("rnn_socket", as.integer(domain), as.integer(protocol))
 }
 
 nn_close <- function(s) {
-  res <- .C("rnn_close",
-    as.integer(s), result = integer(1))
-  res[["result"]]
+  .Call("rnn_close", as.integer(s))
 }
 
 nn_shutdown <- function(s, how) {
-  res <- .C("rnn_shutdown",
-    as.integer(s), as.integer(how), result = integer(1))
-  res[["result"]]
+  .Call("rnn_shutdown", as.integer(s), as.integer(how))
 }
 
 nn_connect <- function(s, addr) {
-  res <- .C("rnn_connect", as.integer(s), addr, result=integer(1))
-  res[["result"]]
+  .Call("rnn_connect", as.integer(s), addr)
 }
 
 nn_bind <- function(s, addr) {
-  res <- .C("rnn_bind", as.integer(s), addr, result=integer(1))
-  res[["result"]]
+  .Call("rnn_connect", as.integer(s), addr)
 }
 

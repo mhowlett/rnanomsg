@@ -22,29 +22,98 @@
 
 #include <nanomsg/nn.h>
 #include <nanomsg/reqrep.h>
+
 #include <R.h>
+#include <Rdefines.h>
+#include <stdio.h>
 
-void rnn_socket(int *domain, int *protocol, int* result)
+
+SEXP rnn_socket(SEXP domain, SEXP protocol)
 {
-  *result = nn_socket(*domain, *protocol);
+  SEXP result;
+  int *p_result;
+  const int len = 1;
+
+  PROTECT(result = NEW_INTEGER(len));
+  p_result = INTEGER_POINTER(result);
+
+  int d = (INTEGER_POINTER(domain))[0];
+  int p = (INTEGER_POINTER(protocol))[0];
+
+  p_result[0] = nn_socket(d, p);
+
+  UNPROTECT(1);
+  return result;
 }
 
-void rnn_connect(int *s, const char **addr, int *result)
+SEXP rnn_close(SEXP s)
 {
-  *result = nn_connect(*s, *addr);
+  SEXP result;
+  int *p_result;
+  const int len = 1;
+
+  PROTECT(result = NEW_INTEGER(len));
+  p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+
+  p_result[0] = nn_close(s_);
+
+  UNPROTECT(1);
+  return result;
 }
 
-void rnn_bind(int *s, const char **addr, int *result)
+SEXP rnn_shutdown(SEXP s, SEXP how)
 {
-  *result = nn_bind(*s, *addr);
+  SEXP result;
+  int *p_result;
+  const int len = 1;
+
+  PROTECT(result = NEW_INTEGER(len));
+  p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+  int how_ = (INTEGER_POINTER(how))[0];
+
+  p_result[0] = nn_shutdown(s_, how_);
+
+  UNPROTECT(1);
+  return result;
 }
 
-void rnn_close(int *s, int *result)
+SEXP rnn_connect(SEXP s, SEXP addr)
 {
-  *result = nn_close(*s);
+  SEXP result;
+  int *p_result;
+  const int len = 1;
+
+  PROTECT(result = NEW_INTEGER(len));
+  p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+  const char *addr_ = CHAR(STRING_ELT(addr, 0));
+
+  p_result[0] = nn_connect(s_, addr_);
+ 
+  UNPROTECT(1);
+  return result;
 }
 
-void rnn_shutdown(int *s, int *how, int *result)
+SEXP rnn_bind(SEXP s, SEXP addr)
 {
-  *result = nn_shutdown(*s, *how);
+  SEXP result;
+  int *p_result;
+  const int len = 1;
+
+  PROTECT(result = NEW_INTEGER(len));
+  p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+  const char *addr_ = CHAR(STRING_ELT(addr, 0));
+
+  p_result[0] = nn_bind(s_, addr_);
+ 
+  UNPROTECT(1);
+  return result;
 }
+
