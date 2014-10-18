@@ -32,9 +32,9 @@ SEXP rnn_socket(SEXP domain, SEXP protocol)
 {
   SEXP result;
   int *p_result;
-  const int len = 1;
+  const int result_len = 1;
 
-  PROTECT(result = NEW_INTEGER(len));
+  PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
   int d = (INTEGER_POINTER(domain))[0];
@@ -50,9 +50,9 @@ SEXP rnn_close(SEXP s)
 {
   SEXP result;
   int *p_result;
-  const int len = 1;
+  const int result_len = 1;
 
-  PROTECT(result = NEW_INTEGER(len));
+  PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
   int s_ = (INTEGER_POINTER(s))[0];
@@ -67,9 +67,9 @@ SEXP rnn_shutdown(SEXP s, SEXP how)
 {
   SEXP result;
   int *p_result;
-  const int len = 1;
+  const int result_len = 1;
 
-  PROTECT(result = NEW_INTEGER(len));
+  PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
   int s_ = (INTEGER_POINTER(s))[0];
@@ -85,9 +85,9 @@ SEXP rnn_connect(SEXP s, SEXP addr)
 {
   SEXP result;
   int *p_result;
-  const int len = 1;
+  const int result_len = 1;
 
-  PROTECT(result = NEW_INTEGER(len));
+  PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
   int s_ = (INTEGER_POINTER(s))[0];
@@ -103,15 +103,35 @@ SEXP rnn_bind(SEXP s, SEXP addr)
 {
   SEXP result;
   int *p_result;
-  const int len = 1;
+  const int result_len = 1;
 
-  PROTECT(result = NEW_INTEGER(len));
+  PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
   int s_ = (INTEGER_POINTER(s))[0];
   const char *addr_ = CHAR(STRING_ELT(addr, 0));
 
   p_result[0] = nn_bind(s_, addr_);
+ 
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP rnn_send(SEXP s, SEXP buf, SEXP flags)
+{
+  SEXP result;
+  int *p_result;
+  const int result_len = 1;
+
+  PROTECT(result = NEW_INTEGER(result_len));
+  p_result = INTEGER_POINTER(result);
+
+  void *p_buf = RAW_POINTER(buf);
+  int s_ = (INTEGER_POINTER(s))[0];
+  int flags_ = (INTEGER_POINTER(flags))[0];
+  int buf_len = LENGTH(buf);
+
+  p_result[0] = nn_send(s_, p_buf, buf_len, flags_);
  
   UNPROTECT(1);
   return result;

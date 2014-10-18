@@ -51,3 +51,6 @@ nn_bind <- function(s, addr) {
   .Call("rnn_connect", as.integer(s), addr)
 }
 
+nn_send <- function(s, buf, flags) {
+  .Call("rnn_send", as.integer(s), as.raw(buf), as.integer(flags))
+}
