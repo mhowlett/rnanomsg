@@ -48,9 +48,37 @@ nn_connect <- function(s, addr) {
 }
 
 nn_bind <- function(s, addr) {
-  .Call("rnn_connect", as.integer(s), addr)
+  .Call("rnn_bind", as.integer(s), addr)
 }
 
 nn_send <- function(s, buf, flags) {
   .Call("rnn_send", as.integer(s), as.raw(buf), as.integer(flags))
+}
+
+nn_recv <- function(s, flags) {
+  result <- .Call("rnn_recv", as.integer(s), as.integer(flags))
+  list(rv = result[[1]], buf = result[[2]])
+}
+
+
+rnanomsg_test_server <- function() {
+  cat("server running...\n")
+  s <- nn_socket(AF_SP, NN_REP)
+  ep <- nn_bind(s, "tcp://127.0.0.1:8007")
+  rv <- nn_recv(s, 0)
+  cat("recieved: ", rv[["buf"]], "\n")
+  payload <- as.raw(c(8,8))
+  rv <- nn_send(s, payload, 0)
+  cat("sent: ", payload, "\n")
+}
+
+rnanomsg_test_client <- function() {
+  cat("client running...\n")
+  s <- nn_socket(AF_SP, NN_REQ)
+  ep <- nn_connect(s, "tcp://127.0.0.1:8007")
+  payload <- as.raw(c(1, 2, 3))
+  rv <- nn_send(s, payload, 0)
+  cat("sent: ", payload, "\n")
+  rv <- nn_recv(s, 0)
+  cat("received: ", rv[["buf"]], "\n")
 }

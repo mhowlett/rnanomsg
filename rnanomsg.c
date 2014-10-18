@@ -137,3 +137,51 @@ SEXP rnn_send(SEXP s, SEXP buf, SEXP flags)
   return result;
 }
 
+SEXP rnn_recv(SEXP s, SEXP flags)
+{
+  int protect_count = 0;
+ 
+  int s_ = (INTEGER_POINTER(s))[0];
+  int flags_ = (INTEGER_POINTER(flags))[0];
+
+  void *nnbuf = NULL;
+  int rv = nn_recv(s_, &nnbuf, NN_MSG, flags_);
+
+  SEXP ret;
+  const int ret_len = 1;
+  PROTECT(ret = NEW_INTEGER(ret_len));
+  int *p_ret = INTEGER_POINTER(ret);
+  p_ret[0] = rv;
+  protect_count += 1;
+
+  SEXP a;
+  if (rv == -1) {
+    a = list2(ret, R_NilValue);
+  }
+  else
+  {
+    SEXP buf;
+    unsigned char *p_buf;
+    int buf_len = rv;
+    PROTECT(buf = NEW_RAW(buf_len));
+    p_buf = RAW_POINTER(buf);
+    protect_count +=1;
+
+    memcpy(p_buf, nnbuf, buf_len);
+
+    int rv2 = nn_freemsg(nnbuf);
+    if (rv2 == -1)
+    {
+      // may not be catastrophic, but assume it is.
+      p_ret[0] = rv2;
+      a = list2(ret, R_NilValue);
+    }
+    else
+    {
+      a = list2(ret, buf);
+    }
+  }
+
+  UNPROTECT(protect_count);
+  return a;
+}
