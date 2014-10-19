@@ -56,6 +56,35 @@ NN_SURVEYOR_DEADLINE <- 1
 NN_PROTO_BUS <- 7
 NN_BUS <- NN_PROTO_BUS * 16 + 0
 
+# Generic socket options
+
+NN_SOL_SOCKET <- 0
+
+NN_LINGER <- 1
+NN_SNDBUF <- 2
+NN_RCVBUF <- 3
+NN_SNDTIMEO <- 4
+NN_RCVTIMEO <- 5
+NN_RECONNECT_IVL <- 6
+NN_RECONNECT_IVL_MAX <- 7
+NN_SNDPRIO <- 8
+NN_RCVPRIO <- 9
+NN_SNDFD <- 10
+NN_RCVFD <- 11
+NN_DOMAIN <- 12
+NN_PROTOCOL <- 13
+NN_IPV4ONLY <- 14
+NN_SOCKET_NAME <- 15
+
+# send/recv options
+
+NN_DONTWAIT <- 1
+
+# poll related
+
+NN_POLLIN <- 1
+NN_POLLOUT <- 2
+
 
 nn_socket <- function(domain, protocol) {
   .Call("rnn_socket", as.integer(domain), as.integer(protocol))
