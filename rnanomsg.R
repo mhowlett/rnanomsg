@@ -21,15 +21,41 @@
 
 dyn.load('rnanomsg.so')
 
-# sp address families
+# SP Address Families
 AF_SP <- 1
 AF_SP_RAW <- 2
 
+# PAIR
+NN_PROTO_PAIR <- 1
+NN_PAIR <- NN_PROTO_PAIR * 16 + 0
 
-# protocols
+# PUBSUB
+NN_PROTO_PUBSUB <- 2
+NN_PUB <- NN_PROTO_PUBSUB * 16 + 0
+NN_SUB <- NN_PROTO_PUBSUB * 16 + 1
+NN_SUB_SUBSCRIBE 1
+NN_SUB_UNSUBSCRIBE 2
+
+# REQREP
 NN_PROTO_REQREP <- 3
 NN_REQ <- NN_PROTO_REQREP * 16 + 0
 NN_REP <- NN_PROTO_REQREP * 16 + 1
+
+# PIPELINE
+NN_PROTO_PIPELINE <- 5
+NN_PUSH <- NN_PROTO_PIPELINE * 16 + 0
+NN_PULL <- NN_PROTO_PIPELINE * 16 + 1
+
+# SURVEY
+NN_PROTO_SURVEY <- 6
+NN_SURVEYOR <- NN_PROTO_SURVEY * 16 + 0
+NN_RESPONDENT <- NN_PROTO_SURVEY * 16 + 1
+NN_SURVEYOR_DEADLINE <- 1
+
+# BUS
+NN_PROTO_BUS <- 7
+NN_BUS <- NN_PROTO_BUS * 16 + 0
+
 
 nn_socket <- function(domain, protocol) {
   .Call("rnn_socket", as.integer(domain), as.integer(protocol))
