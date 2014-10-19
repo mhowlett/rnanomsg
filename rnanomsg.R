@@ -189,8 +189,8 @@ nn_strerror <- function(errnum) {
   .Call("rnn_strerror", errnum)
 }
 
-nn_setsockopt(s, level, option, optval) {
-  if (!is.integer(s) {
+nn_setsockopt <- function(s, level, option, optval) {
+  if (!is.integer(s)) {
     stop("s parameter must have type integer")
   }
   if (!is.integer(option)) {
