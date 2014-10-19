@@ -33,8 +33,8 @@ NN_PAIR <- NN_PROTO_PAIR * 16 + 0
 NN_PROTO_PUBSUB <- 2
 NN_PUB <- NN_PROTO_PUBSUB * 16 + 0
 NN_SUB <- NN_PROTO_PUBSUB * 16 + 1
-NN_SUB_SUBSCRIBE 1
-NN_SUB_UNSUBSCRIBE 2
+NN_SUB_SUBSCRIBE <- 1
+NN_SUB_UNSUBSCRIBE <- 2
 
 # REQREP
 NN_PROTO_REQREP <- 3
@@ -92,6 +92,14 @@ nn_device <- function(s1, s2) {
 
 nn_term <- function() {
   .Call("rnn_term")
+}
+
+nn_errno <- function() {
+  .Call("rnn_errno")
+}
+
+nn_strerror <- function(errnum) {
+  .Call("rnn_strerror", as.integer(errnum))
 }
 
 

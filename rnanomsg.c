@@ -209,3 +209,33 @@ SEXP rnn_term()
   nn_term();
   return R_NilValue;
 }
+
+SEXP rnn_errno()
+{
+  SEXP result;
+  int *p_result;
+  const int result_len = 1;
+
+  PROTECT(result = NEW_INTEGER(result_len));
+  p_result = INTEGER_POINTER(result);
+
+  p_result[0] = nn_errno();
+
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP rnn_strerror(SEXP errnum)
+{
+  SEXP result;
+  const int result_len = 1;
+  PROTECT(result = NEW_CHARACTER(result_len));
+
+  int errnum_ = (INTEGER_POINTER(errnum))[0];
+
+  const char* error_string = nn_strerror(errnum_);
+  SET_STRING_ELT(result, 0, mkChar(error_string));
+
+  UNPROTECT(1);
+  return result;
+}
