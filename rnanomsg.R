@@ -22,101 +22,155 @@
 dyn.load('rnanomsg.so')
 
 # SP Address Families
-AF_SP <- 1
-AF_SP_RAW <- 2
+AF_SP <- 1L
+AF_SP_RAW <- 2L
 
 # PAIR
-NN_PROTO_PAIR <- 1
-NN_PAIR <- NN_PROTO_PAIR * 16 + 0
+NN_PROTO_PAIR <- 1L
+NN_PAIR <- NN_PROTO_PAIR * 16L + 0L
 
 # PUBSUB
-NN_PROTO_PUBSUB <- 2
-NN_PUB <- NN_PROTO_PUBSUB * 16 + 0
-NN_SUB <- NN_PROTO_PUBSUB * 16 + 1
-NN_SUB_SUBSCRIBE <- 1
-NN_SUB_UNSUBSCRIBE <- 2
+NN_PROTO_PUBSUB <- 2L
+NN_PUB <- NN_PROTO_PUBSUB * 16L + 0L
+NN_SUB <- NN_PROTO_PUBSUB * 16L + 1L
+NN_SUB_SUBSCRIBE <- 1L
+NN_SUB_UNSUBSCRIBE <- 2L
 
 # REQREP
-NN_PROTO_REQREP <- 3
-NN_REQ <- NN_PROTO_REQREP * 16 + 0
-NN_REP <- NN_PROTO_REQREP * 16 + 1
+NN_PROTO_REQREP <- 3L
+NN_REQ <- NN_PROTO_REQREP * 16L + 0L
+NN_REP <- NN_PROTO_REQREP * 16L + 1L
 
 # PIPELINE
-NN_PROTO_PIPELINE <- 5
-NN_PUSH <- NN_PROTO_PIPELINE * 16 + 0
-NN_PULL <- NN_PROTO_PIPELINE * 16 + 1
+NN_PROTO_PIPELINE <- 5L
+NN_PUSH <- NN_PROTO_PIPELINE * 16L + 0L
+NN_PULL <- NN_PROTO_PIPELINE * 16L + 1L
 
 # SURVEY
-NN_PROTO_SURVEY <- 6
-NN_SURVEYOR <- NN_PROTO_SURVEY * 16 + 0
-NN_RESPONDENT <- NN_PROTO_SURVEY * 16 + 1
-NN_SURVEYOR_DEADLINE <- 1
+NN_PROTO_SURVEY <- 6L
+NN_SURVEYOR <- NN_PROTO_SURVEY * 16L + 0L
+NN_RESPONDENT <- NN_PROTO_SURVEY * 16L + 1L
+NN_SURVEYOR_DEADLINE <- 1L
 
 # BUS
-NN_PROTO_BUS <- 7
-NN_BUS <- NN_PROTO_BUS * 16 + 0
+NN_PROTO_BUS <- 7L
+NN_BUS <- NN_PROTO_BUS * 16L + 0L
 
 # Generic socket options
 
-NN_SOL_SOCKET <- 0
+NN_SOL_SOCKET <- 0L
 
-NN_LINGER <- 1
-NN_SNDBUF <- 2
-NN_RCVBUF <- 3
-NN_SNDTIMEO <- 4
-NN_RCVTIMEO <- 5
-NN_RECONNECT_IVL <- 6
-NN_RECONNECT_IVL_MAX <- 7
-NN_SNDPRIO <- 8
-NN_RCVPRIO <- 9
-NN_SNDFD <- 10
-NN_RCVFD <- 11
-NN_DOMAIN <- 12
-NN_PROTOCOL <- 13
-NN_IPV4ONLY <- 14
-NN_SOCKET_NAME <- 15
+NN_LINGER <- 1L
+NN_SNDBUF <- 2L
+NN_RCVBUF <- 3L
+NN_SNDTIMEO <- 4L
+NN_RCVTIMEO <- 5L
+NN_RECONNECT_IVL <- 6L
+NN_RECONNECT_IVL_MAX <- 7L
+NN_SNDPRIO <- 8L
+NN_RCVPRIO <- 9L
+NN_SNDFD <- 10L
+NN_RCVFD <- 11L
+NN_DOMAIN <- 12L
+NN_PROTOCOL <- 13L
+NN_IPV4ONLY <- 14L
+NN_SOCKET_NAME <- 15L
 
 # send/recv options
 
-NN_DONTWAIT <- 1
+NN_DONTWAIT <- 1L
 
 # poll related
 
-NN_POLLIN <- 1
-NN_POLLOUT <- 2
+NN_POLLIN <- 1L
+NN_POLLOUT <- 2L
 
 
 nn_socket <- function(domain, protocol) {
-  .Call("rnn_socket", as.integer(domain), as.integer(protocol))
+  if (!is.integer(domain)) {
+    stop("domain parameter must have type integer")
+  }
+  if (!is.integer(protocol))
+  {
+    stop("protocol parameter must have type integer")
+  }
+
+  .Call("rnn_socket", domain, protocol)
 }
 
 nn_close <- function(s) {
-  .Call("rnn_close", as.integer(s))
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+
+  .Call("rnn_close", s)
 }
 
 nn_shutdown <- function(s, how) {
-  .Call("rnn_shutdown", as.integer(s), as.integer(how))
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.integer(how)) {
+    stop("how parameter must have type integer")
+  }
+
+  .Call("rnn_shutdown", s, how)
 }
 
 nn_connect <- function(s, addr) {
-  .Call("rnn_connect", as.integer(s), addr)
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.character(addr)) {
+    stop("addr parameter must have type character")
+  }
+
+  .Call("rnn_connect", s, addr)
 }
 
 nn_bind <- function(s, addr) {
-  .Call("rnn_bind", as.integer(s), addr)
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.character(addr)) {
+    stop("addr parameter must have type character")
+  }
+
+  .Call("rnn_bind", s, addr)
 }
 
 nn_send <- function(s, buf, flags) {
-  .Call("rnn_send", as.integer(s), as.raw(buf), as.integer(flags))
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.integer(flags)) {
+    stop("flags parameter must have type integer")
+  }
+
+  .Call("rnn_send", s, as.raw(buf), flags)
 }
 
 nn_recv <- function(s, flags) {
-  result <- .Call("rnn_recv", as.integer(s), as.integer(flags))
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.integer(flags)) {
+    stop("flags parameter must have type integer")
+  }
+
+  result <- .Call("rnn_recv", s, flags)
   list(rv = result[[1]], buf = result[[2]])
 }
 
 nn_device <- function(s1, s2) {
-  .Call("rnn_device", as.integer(s1), as.integer(s2))
+  if (!is.integer(s1)) {
+    stop("s1 parameter must have type integer")
+  }
+  if (!is.integer(s2)) {
+    stop("s2 parameter must have type integer")
+  }
+
+  .Call("rnn_device", s1, s2)
 }
 
 nn_term <- function() {
@@ -128,9 +182,41 @@ nn_errno <- function() {
 }
 
 nn_strerror <- function(errnum) {
-  .Call("rnn_strerror", as.integer(errnum))
+  if (!is.integer(errnum)) {
+    stop("errnum parameter must have type integer")
+  }
+
+  .Call("rnn_strerror", errnum)
 }
 
+nn_setsockopt(s, level, option, optval) {
+  if (!is.integer(s) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.integer(option)) {
+    stop("option parameter must have type integer")
+  }
+  if (!is.integer(level)){
+    stop("level parameter must have type integer")
+  }
+
+  if (is.character(optval)) {
+    .Call("rnn_setsockopt_char", s, level, option, optval)
+  }
+  else if (is.integer(optval)) {
+    .Call("rnn_setsockopt_int", s, level, option, optval)
+  }
+  else if (is.double(optval) && round(optval) == optval) {
+    # because an numeric literal is a double not an integer.
+    .Call("rnn_setsockopt_int", s, level, option, as.integer(optval))
+  }
+  else {
+    stop("optval type provided is not supported")
+  }
+}
+
+
+# examples
 
 rnanomsg_test_server <- function() {
   cat("server running...\n")
@@ -138,7 +224,7 @@ rnanomsg_test_server <- function() {
   ep <- nn_bind(s, "tcp://127.0.0.1:8007")
   rv <- nn_recv(s, 0)
   cat("recieved: ", rv[["buf"]], "\n")
-  payload <- as.raw(c(8,8))
+  payload <- as.raw(c(8, 8))
   rv <- nn_send(s, payload, 0)
   cat("sent: ", payload, "\n")
 }

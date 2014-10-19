@@ -239,3 +239,39 @@ SEXP rnn_strerror(SEXP errnum)
   UNPROTECT(1);
   return result;
 }
+
+SEXP rnn_setsockopt_int(SEXP s, SEXP level, SEXP option, SEXP optval)
+{
+  SEXP result;
+  const int result_len = 1;
+  PROTECT(result = NEW_INTEGER(result_len));
+  int *p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+  int level_ = (INTEGER_POINTER(level))[0];
+  int option_ = (INTEGER_POINTER(option))[0];
+  int optval_ = (INTEGER_POINTER(optval))[0];
+
+  p_result[0] = nn_setsockopt(s_, level_, option_, &optval_, sizeof(int));
+
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP rnn_setsockopt_char(SEXP s, SEXP level, SEXP option, SEXP optval)
+{
+  SEXP result;
+  const int result_len = 1;
+  PROTECT(result = NEW_INTEGER(result_len));
+  int *p_result = INTEGER_POINTER(result);
+
+  int s_ = (INTEGER_POINTER(s))[0];
+  int level_ = (INTEGER_POINTER(level))[0];
+  int option_ = (INTEGER_POINTER(option))[0];
+  const char *optval_ = CHAR(STRING_ELT(optval, 0));
+
+  p_result[0] = nn_setsockopt(s_, level_, option_, optval_, strlen(optval_));
+
+  UNPROTECT(1);
+  return result;
+}
