@@ -86,6 +86,14 @@ nn_recv <- function(s, flags) {
   list(rv = result[[1]], buf = result[[2]])
 }
 
+nn_device <- function(s1, s2) {
+  .Call("rnn_device", as.integer(s1), as.integer(s2))
+}
+
+nn_term <- function() {
+  .Call("rnn_term")
+}
+
 
 rnanomsg_test_server <- function() {
   cat("server running...\n")

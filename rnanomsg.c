@@ -172,7 +172,7 @@ SEXP rnn_recv(SEXP s, SEXP flags)
     int rv2 = nn_freemsg(nnbuf);
     if (rv2 == -1)
     {
-      // may not be catastrophic, but assume it is.
+      // may not be catastrophic, but let's assume it is.
       p_ret[0] = rv2;
       a = list2(ret, R_NilValue);
     }
@@ -184,4 +184,28 @@ SEXP rnn_recv(SEXP s, SEXP flags)
 
   UNPROTECT(protect_count);
   return a;
+}
+
+SEXP rnn_device(SEXP s1, SEXP s2)
+{
+  SEXP result;
+  int *p_result;
+  const int result_len = 1;
+
+  PROTECT(result = NEW_INTEGER(result_len));
+  p_result = INTEGER_POINTER(result);
+
+  int s1_ = (INTEGER_POINTER(s1))[0];
+  int s2_ = (INTEGER_POINTER(s2))[0];
+
+  p_result[0] = nn_device(s1_, s2_);
+
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP rnn_term()
+{
+  nn_term();
+  return R_NilValue;
 }
