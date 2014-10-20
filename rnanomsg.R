@@ -199,6 +199,9 @@ nn_getsockopt <- function(s, level, option, type, optvallen = 256L) {
   if (!is.integer(level)){
     stop("level parameter must have type integer")
   }
+  if (!is.integer(optvallen)){
+    stop("optvallen parameter must have type integer")
+  }
 
   if (is.integer(type)) {
     .Call("rnn_getsockopt_int", s, level, option)
