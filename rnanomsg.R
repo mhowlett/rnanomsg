@@ -189,6 +189,26 @@ nn_strerror <- function(errnum) {
   .Call("rnn_strerror", errnum)
 }
 
+nn_getsockopt <- function(s, level, option, type, optvallen = 256L) {
+  if (!is.integer(s)) {
+    stop("s parameter must have type integer")
+  }
+  if (!is.integer(option)) {
+    stop("option parameter must have type integer")
+  }
+  if (!is.integer(level)){
+    stop("level parameter must have type integer")
+  }
+
+  if (is.integer(type)) {
+    .Call("rnn_getsockopt_int", s, level, option)
+  } else if (is.character(type)) {
+    .Call("rnn_getsockopt_char", s, level, option, optvallen)
+  } else {
+    stop("unsupported option type")
+  }
+}
+
 nn_setsockopt <- function(s, level, option, optval) {
   if (!is.integer(s)) {
     stop("s parameter must have type integer")

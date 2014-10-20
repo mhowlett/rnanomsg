@@ -275,3 +275,75 @@ SEXP rnn_setsockopt_char(SEXP s, SEXP level, SEXP option, SEXP optval)
   UNPROTECT(1);
   return result;
 }
+
+SEXP rnn_getsockopt_int(SEXP s, SEXP level, SEXP option)
+{
+  int s_ = (INTEGER_POINTER(s))[0];
+  int level_ = (INTEGER_POINTER(level))[0];
+  int option_ = (INTEGER_POINTER(option))[0];
+
+  int optval_;
+  size_t optvalsize = sizeof(int);
+  int rv_ = nn_getsockopt(s_, level_, option_, &optval_, &optvalsize);
+
+  SEXP rv;
+  const int rv_len = 1;
+  PROTECT(rv = NEW_INTEGER(rv_len));
+  int *p_rv = INTEGER_POINTER(rv);
+  p_rv[0] = rv_;
+
+  SEXP optval;
+  const int optval_len = 1;
+  PROTECT(optval = NEW_INTEGER(optval_len));
+  int *p_optval = INTEGER_POINTER(optval);
+  p_optval[0] = optval_;
+
+  SEXP result = list2(rv, optval);
+
+  UNPROTECT(2);
+  return result;
+}
+
+SEXP rnn_getsockopt_char(SEXP s, SEXP level, SEXP option, SEXP optvallen)
+{
+  int s_ = (INTEGER_POINTER(s))[0];
+  int level_ = (INTEGER_POINTER(level))[0];
+  int option_ = (INTEGER_POINTER(option))[0];
+  size_t optvallen_ = (INTEGER_POINTER(optvallen))[0];
+
+  int maxlen = optvallen_;
+  char *optval_ = malloc(optvallen_);
+  int rv_ = nn_getsockopt(s_, level_, option_, &optval_, &optvallen_);
+ 
+  SEXP rv;
+  const int rv_len = 1;
+  PROTECT(rv = NEW_INTEGER(rv_len));
+  int *p_rv = INTEGER_POINTER(rv);
+  p_rv[0] = rv_;
+
+  SEXP optval;
+  const int optval_len = 1;
+  PROTECT(optval = NEW_CHARACTER(optval_len));
+  // zero terminating may already be done, but i'm not sure.
+  if (optvallen_ == maxlen)
+  {
+    optval_[maxlen-1] = 0;
+  }
+  else
+  {
+    optval_[optvallen_] = 0;
+  }
+  SET_STRING_ELT(optval, 0, mkChar(optval_));
+  free(optval_);
+
+  SEXP retoptvallen;
+  const int retoptvallen_len = 1;
+  PROTECT(retoptvallen = NEW_INTEGER(retoptvallen_len));
+  int *p_retoptvallen = INTEGER_POINTER(retoptvallen);
+  p_retoptvallen[0] = optvallen_;
+
+  SEXP result = list3(rv, optval, retoptvallen);
+
+  UNPROTECT(3);
+  return result;
+}
