@@ -19,72 +19,12 @@
 # THE SOFTWARE.
 
 
-dyn.load('rnanomsg.so')
+#dyn.load('rnanomsg.so')
+#source('constants.R')
+#source('examples.R')
 
-# SP Address Families
-AF_SP <- 1L
-AF_SP_RAW <- 2L
 
-# PAIR
-NN_PROTO_PAIR <- 1L
-NN_PAIR <- NN_PROTO_PAIR * 16L + 0L
-
-# PUBSUB
-NN_PROTO_PUBSUB <- 2L
-NN_PUB <- NN_PROTO_PUBSUB * 16L + 0L
-NN_SUB <- NN_PROTO_PUBSUB * 16L + 1L
-NN_SUB_SUBSCRIBE <- 1L
-NN_SUB_UNSUBSCRIBE <- 2L
-
-# REQREP
-NN_PROTO_REQREP <- 3L
-NN_REQ <- NN_PROTO_REQREP * 16L + 0L
-NN_REP <- NN_PROTO_REQREP * 16L + 1L
-
-# PIPELINE
-NN_PROTO_PIPELINE <- 5L
-NN_PUSH <- NN_PROTO_PIPELINE * 16L + 0L
-NN_PULL <- NN_PROTO_PIPELINE * 16L + 1L
-
-# SURVEY
-NN_PROTO_SURVEY <- 6L
-NN_SURVEYOR <- NN_PROTO_SURVEY * 16L + 0L
-NN_RESPONDENT <- NN_PROTO_SURVEY * 16L + 1L
-NN_SURVEYOR_DEADLINE <- 1L
-
-# BUS
-NN_PROTO_BUS <- 7L
-NN_BUS <- NN_PROTO_BUS * 16L + 0L
-
-# Generic socket options
-
-NN_SOL_SOCKET <- 0L
-
-NN_LINGER <- 1L
-NN_SNDBUF <- 2L
-NN_RCVBUF <- 3L
-NN_SNDTIMEO <- 4L
-NN_RCVTIMEO <- 5L
-NN_RECONNECT_IVL <- 6L
-NN_RECONNECT_IVL_MAX <- 7L
-NN_SNDPRIO <- 8L
-NN_RCVPRIO <- 9L
-NN_SNDFD <- 10L
-NN_RCVFD <- 11L
-NN_DOMAIN <- 12L
-NN_PROTOCOL <- 13L
-NN_IPV4ONLY <- 14L
-NN_SOCKET_NAME <- 15L
-
-# send/recv options
-
-NN_DONTWAIT <- 1L
-
-# poll related
-
-NN_POLLIN <- 1L
-NN_POLLOUT <- 2L
-
+### METHODS
 
 nn_socket <- function(domain, protocol) {
   if (!is.integer(domain)) {
@@ -238,27 +178,6 @@ nn_setsockopt <- function(s, level, option, optval) {
   }
 }
 
-
-# examples
-
-rnanomsg_test_server <- function() {
-  cat("server running...\n")
-  s <- nn_socket(AF_SP, NN_REP)
-  ep <- nn_bind(s, "tcp://127.0.0.1:8007")
-  rv <- nn_recv(s, 0)
-  cat("recieved: ", rv[["buf"]], "\n")
-  payload <- as.raw(c(8, 8))
-  rv <- nn_send(s, payload, 0)
-  cat("sent: ", payload, "\n")
-}
-
-rnanomsg_test_client <- function() {
-  cat("client running...\n")
-  s <- nn_socket(AF_SP, NN_REQ)
-  ep <- nn_connect(s, "tcp://127.0.0.1:8007")
-  payload <- as.raw(c(1, 2, 3))
-  rv <- nn_send(s, payload, 0)
-  cat("sent: ", payload, "\n")
-  rv <- nn_recv(s, 0)
-  cat("received: ", rv[["buf"]], "\n")
+nn_poll <- function() {
+  stop("not implemented")
 }

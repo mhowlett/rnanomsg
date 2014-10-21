@@ -4,6 +4,6 @@ Title: An R binding for nanomsg
 Version: 0.1
 Date: 2014-10-20
 Author: Matt Howlett
-Maintainer: email@matthowlett.com
+Maintainer: Matt Howlett <email@matthowlett.com>
 Description: An R binding for the nanomsg library. http://nanomsg.org
 License: MIT
