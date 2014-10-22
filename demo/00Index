@@ -1,0 +1,2 @@
+reqrepClient	A simple REQREP client demo. Use with reqrepServer.
+reqrepServer	A simple REQREP server demo. Use with reqrepClient.

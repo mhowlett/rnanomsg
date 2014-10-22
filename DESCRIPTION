@@ -1,7 +1,7 @@
 Package: rnanomsg
 Type: Package
 Title: An R binding for nanomsg
-Version: 0.1
+Version: 0.1.1
 Date: 2014-10-20
 Author: Matt Howlett
 Maintainer: Matt Howlett <email@matthowlett.com>

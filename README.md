@@ -1,14 +1,14 @@
 ## rnanomsg
 
-rnanomsg is an R binding for <a href="http://nanomsg.org">nanomsg</a>.
+An R binding for <a href="http://nanomsg.org">nanomsg</a>.
 
 ### Development Status
 
-Check back again in about a week..
+Getting fairly complete now but mostly untested. I wouldn't use it yet, come back in about a week.
 
-Getting fairly complete now but mostly untested.
+It is now a package, but it probably won't build/install correctly on your system (unless it's Ubuntu 14.04)
 
-Is now a package, but it probably won't build/install correctly on your system (unless it's Ubuntu 14.04)
+Code review appreciated from anyone who has experience with R/C interop.
 
 ### Install Notes
 
@@ -36,6 +36,10 @@ From an r command prompt:
 Definitely won't work yet.
 
 
-### Usage
+### Examples
 
-Look at R/exmples.R for a bit of an idea
+Run the reqrep client and server demos in two different instances of R on the same maching:
+
+demo("reqrepClient") 
+demo("reqrepServer")
+

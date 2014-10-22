@@ -18,25 +18,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
-reqrep_server <- function() {
-  cat("server running...\n")
-  s <- nn_socket(AF_SP, NN_REP)
-  ep <- nn_bind(s, "tcp://127.0.0.1:8007")
-  rv <- nn_recv(s, 0)
-  cat("recieved: ", rv[["buf"]], "\n")
-  payload <- as.raw(c(8, 8))
-  rv <- nn_send(s, payload, 0)
-  cat("sent: ", payload, "\n")
-}
-
-reqrep_client <- function() {
-  cat("client running...\n")
-  s <- nn_socket(AF_SP, NN_REQ)
-  ep <- nn_connect(s, "tcp://127.0.0.1:8007")
-  payload <- as.raw(c(1, 2, 3))
-  rv <- nn_send(s, payload, 0)
-  cat("sent: ", payload, "\n")
-  rv <- nn_recv(s, 0)
-  cat("received: ", rv[["buf"]], "\n")
-}
+cat("client running...\n")
+s <- nn_socket(AF_SP, NN_REQ)
+ep <- nn_connect(s, "tcp://127.0.0.1:8007")
+payload <- as.raw(c(1, 2, 3))
+rv <- nn_send(s, payload, 0L)
+cat("sent: ", payload, "\n")
+rv <- nn_recv(s, 0L)
+cat("received: ", rv[["buf"]], "\n")
