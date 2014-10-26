@@ -1,10 +1,18 @@
+CPPFLAGS = $(shell R CMD config --cppflags)
+CC = $(shell R CMD config CC)
+SHLIB_LD = $(shell R CMD config SHLIB_LD)
+CFLAGS = $(shell R CMD config CFLAGS)
+SHLIB_LDFLAGS = $(shell R CMD config SHLIB_LDFLAGS)
+CPICFLAGS = $(shell R CMD config CPICFLAGS)
+LDFLAGS = $(shell R CMD config --ldflags)
+
 all: rnanomsg
 
 rnanomsg: objs
-	gcc -std=gnu99 -shared -o rnanomsg.so rnanomsg.o -L/usr/lib/R/lib -lR -lnanomsg
+	$(SHLIB_LD) $(SHLIB_LDFLAGS) -o rnanomsg.so rnanomsg.o $(LDFLAGS) -lnanomsg
 
 objs: rnanomsg.c
-	gcc  -std=gnu99 -I/usr/local/include -I/usr/share/R/include -DNDEBUG -fpic -O3 -pipe -g -c rnanomsg.c -o rnanomsg.o
+	$(CC) $(CPPFLAGS) $(CPICFLAGS) $(CFLAGS) -c rnanomsg.c -o rnanomsg.o
 
 clean:
 	rm -f *~
