@@ -6,9 +6,9 @@ An R binding for <a href="http://nanomsg.org">nanomsg</a>.
 
 Getting fairly complete now but mostly untested. I wouldn't use it yet, come back in about a week.
 
-It is now a package, but it probably won't build/install correctly on your system (unless it's Ubuntu 14.04)
-
 Code review appreciated from anyone who has experience with R/C interop.
+
+Written / tested on Ubuntu 14.04. If you've successfully installed this on another platform, would love to know.
 
 ### Install Notes
 
@@ -21,6 +21,8 @@ First build and install nanomsg:
      make
      make install
      ldconfig
+
+Note: The rnanomsg Makefile assumes the nanomsg includes and library are in the standard search path. It will fail if they are not.
 
 Build the R package from the source with:
 
