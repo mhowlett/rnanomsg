@@ -45,3 +45,6 @@ Run the reqrep client and server demos in two different instances of R on the sa
 demo("reqrepClient") 
 demo("reqrepServer")
 
+### Authors
+
+[Matt Howlett](https://www.matthowlett.com)
