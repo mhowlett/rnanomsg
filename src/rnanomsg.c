@@ -2,8 +2,8 @@
  Copyright (c) 2014 Matthew Howlett
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal 
- in the Software without restriction, including without limitation the rights 
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
@@ -21,8 +21,6 @@
 */
 
 #include <nanomsg/nn.h>
-#include <nanomsg/reqrep.h>
-
 #include <R.h>
 #include <Rdefines.h>
 #include <stdio.h>
@@ -94,7 +92,7 @@ SEXP rnn_connect(SEXP s, SEXP addr)
   const char *addr_ = CHAR(STRING_ELT(addr, 0));
 
   p_result[0] = nn_connect(s_, addr_);
- 
+
   UNPROTECT(1);
   return result;
 }
@@ -112,7 +110,7 @@ SEXP rnn_bind(SEXP s, SEXP addr)
   const char *addr_ = CHAR(STRING_ELT(addr, 0));
 
   p_result[0] = nn_bind(s_, addr_);
- 
+
   UNPROTECT(1);
   return result;
 }
@@ -126,13 +124,17 @@ SEXP rnn_send(SEXP s, SEXP buf, SEXP flags)
   PROTECT(result = NEW_INTEGER(result_len));
   p_result = INTEGER_POINTER(result);
 
-  void *p_buf = RAW_POINTER(buf);
   int s_ = (INTEGER_POINTER(s))[0];
   int flags_ = (INTEGER_POINTER(flags))[0];
-  int buf_len = LENGTH(buf);
-
-  p_result[0] = nn_send(s_, p_buf, buf_len, flags_);
- 
+  if(TYPEOF(buf) == STRSXP) {
+    const char* data = CHAR(STRING_ELT(buf,0));
+    int data_len = strlen(data);
+    p_result[0] = nn_send(s_, data, data_len, flags_);
+  }else{
+    void *p_buf = RAW_POINTER(buf);
+    int buf_len = LENGTH(buf);
+    p_result[0] = nn_send(s_, p_buf, buf_len, flags_);
+  }
   UNPROTECT(1);
   return result;
 }
@@ -140,7 +142,7 @@ SEXP rnn_send(SEXP s, SEXP buf, SEXP flags)
 SEXP rnn_recv(SEXP s, SEXP flags)
 {
   int protect_count = 0;
- 
+
   int s_ = (INTEGER_POINTER(s))[0];
   int flags_ = (INTEGER_POINTER(flags))[0];
 
@@ -314,7 +316,7 @@ SEXP rnn_getsockopt_char(SEXP s, SEXP level, SEXP option, SEXP optvallen)
   int maxlen = optvallen_;
   char *optval_ = malloc(optvallen_);
   int rv_ = nn_getsockopt(s_, level_, option_, &optval_, &optvallen_);
- 
+
   SEXP rv;
   const int rv_len = 1;
   PROTECT(rv = NEW_INTEGER(rv_len));
